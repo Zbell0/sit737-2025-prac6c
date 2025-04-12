@@ -1,95 +1,64 @@
+# Todo App
+
+A simple todo application with Docker, Kubernetes, and React.
+
+## Recent Updates
+
+- Released version 2.0 of the application
+- Docker image tagged as `v2` and published to Docker Hub
+- Updated Kubernetes deployment configuration
 
 
+## Docker Information
 
+The application is containerized using Docker:
 
-# toDo App – Dockerized and Published to GCP Artifact Registry
+```bash
+# Build the Docker image
+docker build -t but05051/todo-app:v2 .
 
-##   Overview  ##
+# Push to Docker Hub
+docker push but05051/todo-app:v2
+```
 
-This is a simple Node.js + Express application that allows basic to-do functionality. The app is containerized using Docker, and the image is pushed to **Google Cloud Artifact Registry** for production-ready deployment.
+## Kubernetes Setup
 
----
+### Deployment
 
-##   Technologies Used ##
+The application is deployed on Kubernetes. Apply the configuration files:
 
-- Node.js
-- Express.js
-- Docker
-- Docker Compose
-- Google Cloud Platform (Artifact Registry)
+```bash
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+```
 
----
+The `deployment.yaml` file has been updated to use the `v2` image:
 
- ##  Prerequisites  ##
+```yaml
+spec:
+  containers:
+  - name: todo-app
+    image: but05051/todo-app:v2
+    ports:
+    - containerPort: 3000
+```
 
-Before running or deploying this app, make sure the following are installed and configured:
+### Accessing the Application
 
-- [Docker](https://www.docker.com/products/docker-desktop)
-- [Google Cloud CLI (gcloud)](https://cloud.google.com/sdk/docs/install)
-- A Google Cloud Project
-- Artifact Registry API enabled on GCP
+Port-forward to access the application locally:
 
----
+```bash
+kubectl port-forward service/todo-service 3000:3000
+```
 
- ##  Setup & Local Docker Usage ##
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 1. Clone the Repository
+## Technology Stack
 
- #### git clone https://github.com/your-username/sit737-2025-prac5d.git
-#### cd sit737-2025-prac5d
+- Frontend: React
+- Containerization: Docker
+- Orchestration: Kubernetes
 
-### 2. Build Docker Image Locally
+## License
 
-#### docker build -t todo-app .
-
-### 3. Run Locally
-
-#### docker run -p 3000:3000 todo-app
-
-#### Then open your browser and go to: http://localhost:3000/todos
-
----
-
-##  Publishing to Google Cloud Artifact Registry
-
-### 1. Authenticate Google Cloud
-
-gcloud init
-gcloud auth configure-docker
-
-### 2. Tag the Docker Image
-
-docker tag todo-app australia-southeast1-docker.pkg.dev/YOUR_PROJECT_ID/todo-repo/todo-app
-
-Replace YOUR_PROJECT_ID with your actual GCP project ID, for example:
-
-docker tag todo-app australia-southeast1-docker.pkg.dev/sit737-25t1-eunji-kim-c5e40ce/todo-repo/todo-app
-
-### 3. Push the Image to GCP
-
-docker push australia-southeast1-docker.pkg.dev/sit737-25t1-eunji-kim-c5e40ce/todo-repo/todo-app
-
-
-
----
-
-##  Verifying the Published Image
-
-### 1. Run the Cloud Image Locally
-
-docker run -p 3000:3000 australia-southeast1-docker.pkg.dev/sit737-25t1-eunji-kim-c5e40ce/todo-repo/todo-app
-
-### 2. Check it in Your Browser
-
-Visit: http://localhost:3000
-
----
-
-##  Health Check (Optional)
-
-A health check route has been implemented at:
-
-GET /healthz → returns 200 OK
-
-
-
+MIT License
