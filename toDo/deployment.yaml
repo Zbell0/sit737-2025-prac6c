@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: todo
-          image: but05051/todo-app
+          image: but05051/todo-app:v2
           ports:
             - containerPort: 3000
